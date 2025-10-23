@@ -1,0 +1,2830 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JR Repasses e Vendas de Veículos SP - Sistema Completo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(230,0,0,0.3) 50%, rgba(0,0,0,0.9) 100%), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect fill="%23000" width="1920" height="1080"/><path fill="%23E60000" opacity="0.1" d="M0,540 Q480,300 960,540 T1920,540 L1920,1080 L0,1080 Z"/><circle fill="%23E60000" opacity="0.08" cx="1400" cy="300" r="200"/><polygon fill="%23E60000" opacity="0.06" points="300,200 500,250 450,450 250,400"/><path fill="%23E60000" opacity="0.04" d="M800,100 L1200,200 L1100,500 L700,400 Z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .luxury-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(230, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .luxury-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(230, 0, 0, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .luxury-card:hover::before {
+            left: 100%;
+        }
+        
+        .luxury-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(230, 0, 0, 0.3), 0 0 0 1px rgba(230, 0, 0, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #E60000 0%, #CC0000 100%);
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(230, 0, 0, 0.4);
+        }
+        
+        .btn-secondary {
+            border: 2px solid #E60000;
+            color: #E60000;
+            background: transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #E60000;
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn-secondary:hover::before {
+            left: 0;
+        }
+        
+        .btn-secondary:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 50%;
+            background: linear-gradient(90deg, #E60000, #FF3333);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .nav-link:hover {
+            color: #E60000 !important;
+        }
+        
+        .admin-panel {
+            background: linear-gradient(145deg, #1a1a1a 0%, #000000 100%);
+            border: 2px solid #E60000;
+            border-radius: 20px;
+            position: relative;
+        }
+        
+        .admin-panel::before {
+            content: 'ÁREA ADMINISTRATIVA';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #E60000;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .editable-placeholder {
+            border: 2px dashed #E60000;
+            background: rgba(230, 0, 0, 0.05);
+            position: relative;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+        
+        .editable-placeholder::before {
+            content: attr(data-placeholder);
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: #E60000;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .login-container {
+            background: linear-gradient(145deg, #1a1a1a 0%, #000000 100%);
+            border: 3px solid #E60000;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(230, 0, 0, 0.3);
+        }
+        
+        .admin-sidebar {
+            background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
+            border-right: 2px solid #E60000;
+            min-height: 100vh;
+        }
+        
+        .admin-menu-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(230, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .admin-menu-item:hover {
+            background: rgba(230, 0, 0, 0.1);
+            border-left: 4px solid #E60000;
+        }
+        
+        .admin-menu-item.active {
+            background: rgba(230, 0, 0, 0.2);
+            border-left: 4px solid #E60000;
+        }
+        
+        .control-table {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #E60000;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .control-table th {
+            background: linear-gradient(135deg, #E60000 0%, #CC0000 100%);
+            color: white;
+            font-weight: bold;
+            padding: 15px 10px;
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .control-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+            font-size: 11px;
+            color: #333;
+        }
+        
+        .control-table tr:hover {
+            background: rgba(230, 0, 0, 0.05);
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        
+        .status-estoque { background: #28a745; color: white; }
+        .status-vendido { background: #dc3545; color: white; }
+        .status-reservado { background: #ffc107; color: black; }
+        
+        .payment-status-pago { background: #28a745; color: white; }
+        .payment-status-aberto { background: #dc3545; color: white; }
+        
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4);
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3); }
+            50% { box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6); }
+            100% { box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3); }
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .instructions-panel {
+            background: linear-gradient(145deg, #f8f9fa 0%, #ffffff 100%);
+            border: 3px solid #E60000;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .instructions-panel::before {
+            content: '📋 INSTRUÇÕES PARA O PROPRIETÁRIO';
+            position: absolute;
+            top: -18px;
+            left: 30px;
+            background: #E60000;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(145deg, #1a1a1a 0%, #000000 100%);
+            border: 2px solid #E60000;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(230, 0, 0, 0.1), transparent);
+            transition: left 0.6s;
+        }
+        
+        .testimonial-card:hover::before {
+            left: 100%;
+        }
+        
+        .stars {
+            color: #FFD700;
+            font-size: 1.5rem;
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-bg {
+                background-attachment: scroll;
+            }
+            
+            .floating-whatsapp {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .control-table {
+                font-size: 10px;
+            }
+            
+            .control-table th,
+            .control-table td {
+                padding: 8px 4px;
+                font-size: 9px;
+            }
+            
+            .admin-sidebar {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Cabeçalho Fixo -->
+    <header class="fixed top-0 w-full bg-black backdrop-blur-md z-50 border-b border-red-600/20">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-4 cursor-pointer" onclick="showPage('home')" id="HEADER_LOGO">
+                    <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-red-700 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-car-side text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white" style="font-family: 'Oswald', sans-serif;">JR REPASSES</h1>
+                        <p class="text-xs text-gray-300 font-medium">VENDAS DE VEÍCULOS SP</p>
+                    </div>
+                </div>
+                
+                <!-- Menu Desktop -->
+                <nav class="hidden lg:flex space-x-8" id="HEADER_MENU">
+                    <a href="#" onclick="showPage('home')" class="nav-link text-white">Início</a>
+                    <a href="#" onclick="showPage('estoque')" class="nav-link text-white">Estoque</a>
+                    <a href="#" onclick="showPage('sobre')" class="nav-link text-white">Sobre Nós</a>
+                    <a href="#" onclick="showPage('contato')" class="nav-link text-white">Contato</a>
+                    <a href="#" onclick="showPage('anunciar')" class="nav-link text-white">Anunciar Veículo</a>
+                </nav>
+                
+                <!-- Botão Quero Comprar -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="showPage('estoque')" class="btn-primary px-8 py-3 rounded-full font-bold text-white text-lg shadow-lg" id="HEADER_BTN_COMPRAR">
+                        <i class="fas fa-shopping-car mr-2"></i>Quero Comprar
+                    </button>
+                    
+                    <!-- Menu Mobile -->
+                    <button class="lg:hidden text-white text-2xl" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Menu Mobile -->
+            <div id="mobileMenu" class="lg:hidden hidden mt-4 pb-4 border-t border-gray-800">
+                <nav class="flex flex-col space-y-4 mt-4">
+                    <a href="#" onclick="showPage('home')" class="text-white hover:text-red-600 transition-colors">Início</a>
+                    <a href="#" onclick="showPage('estoque')" class="text-white hover:text-red-600 transition-colors">Estoque</a>
+                    <a href="#" onclick="showPage('sobre')" class="text-white hover:text-red-600 transition-colors">Sobre Nós</a>
+                    <a href="#" onclick="showPage('contato')" class="text-white hover:text-red-600 transition-colors">Contato</a>
+                    <a href="#" onclick="showPage('anunciar')" class="text-white hover:text-red-600 transition-colors">Anunciar Veículo</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- WhatsApp Flutuante -->
+    <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="floating-whatsapp" data-placeholder="WHATSAPP_FLUTUANTE">
+        <i class="fab fa-whatsapp text-white text-2xl"></i>
+    </a>
+
+    <!-- PÁGINA INICIAL -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero-bg min-h-screen flex items-center pt-20" id="HERO_IMG_CARRO">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl">
+                    <h1 class="text-6xl md:text-8xl font-black mb-8 leading-tight" style="font-family: 'Oswald', sans-serif;" id="HERO_TITULO">
+                        Seu próximo carro <span class="text-red-600">está aqui.</span>
+                    </h1>
+                    <p class="text-2xl md:text-3xl text-gray-200 mb-12 max-w-3xl font-light leading-relaxed" id="HERO_SUBTITULO">
+                        Confiança, transparência e os melhores repasses de veículos em SP.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-8">
+                        <button onclick="showPage('estoque')" class="btn-primary px-12 py-5 rounded-full text-xl font-bold text-white shadow-2xl" id="HERO_BTN_VER_ESTOQUE">
+                            <i class="fas fa-car mr-3"></i>Ver Estoque
+                        </button>
+                        <button onclick="showPage('vitrine')" class="btn-secondary px-12 py-5 rounded-full text-xl font-bold" id="HERO_BTN_VITRINE">
+                            <i class="fas fa-gem mr-3"></i>Vitrine
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Estoque -->
+        <section class="py-24 bg-black" data-placeholder="SECAO_ESTOQUE_HOME">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-20">
+                    <h2 class="text-5xl md:text-6xl font-black mb-6" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_ESTOQUE">
+                        Nosso <span class="text-red-600">Estoque</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto font-light" data-placeholder="SUBTITULO_ESTOQUE">
+                        Veículos selecionados com procedência garantida e qualidade premium
+                    </p>
+                </div>
+                
+                <!-- Exibição dos Veículos -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16" id="publicVehicleDisplay" data-placeholder="GRID_VEICULOS_HOME">
+                    <!-- Veículos serão carregados aqui -->
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="showPage('estoque')" class="btn-secondary px-12 py-5 rounded-full text-xl font-bold" id="BTN_VER_TODOS_VEICULOS">
+                        <i class="fas fa-cars mr-3"></i>Ver Todos os Veículos
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Vitrine Premium -->
+        <section class="py-24 bg-gradient-to-b from-black to-gray-900" data-placeholder="SECAO_VITRINE_HOME">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-20">
+                    <h2 class="text-5xl md:text-6xl font-black mb-6" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_VITRINE">
+                        Vitrine <span class="text-red-600">Premium</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto font-light" data-placeholder="SUBTITULO_VITRINE">
+                        Carros de luxo e alta performance selecionados especialmente
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" id="premiumShowcase" data-placeholder="GRID_VITRINE_HOME">
+                    <!-- Veículos premium serão carregados aqui -->
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="showPage('vitrine')" class="btn-primary px-12 py-5 rounded-full text-xl font-bold" data-placeholder="BOTAO_VER_VITRINE_COMPLETA">
+                        <i class="fas fa-gem mr-3"></i>Ver Vitrine Completa
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+
+    <!-- PÁGINA LOGIN ADMINISTRATIVO -->
+    <div id="login" class="page pt-24">
+        <section class="min-h-screen bg-black flex items-center justify-center py-20" data-placeholder="PAGINA_LOGIN">
+            <div class="container mx-auto px-4">
+                <div class="max-w-md mx-auto">
+                    <div class="login-container p-12">
+                        <div class="text-center mb-12">
+                            <div class="w-20 h-20 bg-gradient-to-br from-red-600 to-red-700 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg" data-placeholder="ICONE_LOGIN">
+                                <i class="fas fa-shield-alt text-white text-3xl"></i>
+                            </div>
+                            <h2 class="text-4xl font-black text-white mb-4" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_LOGIN">
+                                Área do <span class="text-red-600">Administrador</span>
+                            </h2>
+                            <p class="text-gray-300" data-placeholder="SUBTITULO_LOGIN">Acesso restrito ao proprietário</p>
+                        </div>
+                        
+                        <form id="loginForm" class="space-y-8">
+                            <div class="space-y-6">
+                                <div>
+                                    <label for="username" class="block text-white font-semibold mb-3">Usuário</label>
+                                    <input type="text" id="username" name="username" required 
+                                           class="w-full px-6 py-4 bg-gray-800 border-2 border-gray-600 rounded-xl text-white focus:border-red-600 focus:outline-none transition-colors" 
+                                           placeholder="Digite seu usuário">
+                                </div>
+                                <div>
+                                    <label for="password" class="block text-white font-semibold mb-3">Senha</label>
+                                    <input type="password" id="password" name="password" required 
+                                           class="w-full px-6 py-4 bg-gray-800 border-2 border-gray-600 rounded-xl text-white focus:border-red-600 focus:outline-none transition-colors" 
+                                           placeholder="Digite sua senha">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="w-full btn-primary py-5 rounded-xl font-bold text-white text-lg shadow-lg" id="LOGIN_ADM_BTN">
+                                <i class="fas fa-sign-in-alt mr-3"></i>Entrar
+                            </button>
+                        </form>
+                        
+                        <div class="mt-8 text-center">
+                            <button onclick="showPage('home')" class="text-gray-400 hover:text-white transition-colors" data-placeholder="BOTAO_VOLTAR_HOME">
+                                <i class="fas fa-arrow-left mr-2"></i>Voltar ao Site
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAINEL ADMINISTRATIVO -->
+    <div id="admin" class="page pt-20">
+        <div class="flex min-h-screen" data-placeholder="PAINEL_ADMINISTRATIVO">
+            <!-- Sidebar -->
+            <div class="admin-sidebar w-80 p-6" data-placeholder="SIDEBAR_ADMIN">
+                <div class="text-center mb-12">
+                    <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-xl flex items-center justify-center mx-auto mb-4" data-placeholder="LOGO_ADMIN">
+                        <i class="fas fa-cogs text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_PAINEL">PAINEL ADMIN</h3>
+                    <p class="text-gray-400 text-sm" data-placeholder="SUBTITULO_PAINEL">Sistema de Gestão</p>
+                </div>
+                
+                <nav class="space-y-2">
+                    <div class="admin-menu-item active" onclick="showAdminSection('dashboard')">
+                        <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
+                    </div>
+                    <div class="admin-menu-item" onclick="showAdminSection('vehicles')" id="ADM_MENU_ADICIONAR">
+                        <i class="fas fa-car mr-3"></i>Gerenciar Veículos
+                    </div>
+                    <div class="admin-menu-item" onclick="showAdminSection('control')" id="ADM_MENU_CONTROLE">
+                        <i class="fas fa-chart-bar mr-3"></i>Controle da Loja
+                    </div>
+                    <div class="admin-menu-item" onclick="showAdminSection('settings')">
+                        <i class="fas fa-cog mr-3"></i>Configurações
+                    </div>
+                    <div class="admin-menu-item" onclick="showAdminSection('instructions')">
+                        <i class="fas fa-book mr-3"></i>Instruções
+                    </div>
+                    <div class="admin-menu-item" onclick="logout()" id="ADM_MENU_SAIR">
+                        <i class="fas fa-sign-out-alt mr-3"></i>Sair do Sistema
+                    </div>
+                </nav>
+            </div>
+            
+            <!-- Conteúdo Principal -->
+            <div class="flex-1 bg-gray-100 p-8" data-placeholder="CONTEUDO_ADMIN">
+                <!-- Dashboard -->
+                <div id="adminDashboard" class="admin-section active" data-placeholder="SECAO_DASHBOARD">
+                    <h2 class="text-4xl font-black text-black mb-8" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_DASHBOARD">
+                        Dashboard <span class="text-red-600">Geral</span>
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12" data-placeholder="CARDS_DASHBOARD">
+                        <div class="luxury-card p-6 rounded-xl text-center text-black" data-placeholder="CARD_TOTAL_VENDAS">
+                            <div class="text-4xl font-black text-red-600 mb-2" id="totalVendas">0</div>
+                            <div class="font-semibold">Total de Vendas</div>
+                        </div>
+                        <div class="luxury-card p-6 rounded-xl text-center text-black" data-placeholder="CARD_VENDAS_MES">
+                            <div class="text-4xl font-black text-green-600 mb-2" id="vendasMes">0</div>
+                            <div class="font-semibold">Vendas do Mês</div>
+                        </div>
+                        <div class="luxury-card p-6 rounded-xl text-center text-black" data-placeholder="CARD_ESTOQUE_ATUAL">
+                            <div class="text-4xl font-black text-blue-600 mb-2" id="estoqueAtual">0</div>
+                            <div class="font-semibold">Estoque Atual</div>
+                        </div>
+                        <div class="luxury-card p-6 rounded-xl text-center text-black" data-placeholder="CARD_FATURAMENTO">
+                            <div class="text-4xl font-black text-purple-600 mb-2" id="faturamentoMes">R$ 0</div>
+                            <div class="font-semibold">Faturamento Mês</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gerenciar Veículos -->
+                <div id="adminVehicles" class="admin-section" data-placeholder="SECAO_VEICULOS">
+                    <h2 class="text-4xl font-black text-black mb-8" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_GERENCIAR_VEICULOS">
+                        Gerenciar <span class="text-red-600">Veículos</span>
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" data-placeholder="GRID_GERENCIAR_VEICULOS">
+                        <!-- Formulário Adicionar/Editar Veículo -->
+                        <div class="luxury-card p-6 rounded-xl text-black" data-placeholder="CARD_FORMULARIO_VEICULO">
+                            <h4 class="text-xl font-bold mb-6" data-placeholder="TITULO_FORMULARIO">Adicionar/Editar Veículo</h4>
+                            <form id="vehicleForm" class="space-y-4" data-placeholder="FORMULARIO_VEICULO">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="editable-placeholder relative" data-placeholder="PLACEHOLDER_FOTO_VEICULO" id="imagePreviewContainer">
+                                        <input type="file" id="vehicleImage" accept="image/*" class="hidden" onchange="previewImage(this)">
+                                        <div id="imagePreview" class="hidden">
+                                            <img id="previewImg" src="" alt="Preview" class="w-full h-full object-cover rounded-lg">
+                                            <button type="button" onclick="removeImage()" class="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        <button type="button" id="addImageBtn" onclick="document.getElementById('vehicleImage').click()" class="text-red-600 font-bold">
+                                            <i class="fas fa-camera text-3xl mb-2"></i><br>
+                                            Adicionar Foto
+                                        </button>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <input type="text" name="marca" placeholder="Marca" class="w-full p-3 border border-gray-300 rounded-lg" data-placeholder="INPUT_MARCA">
+                                        <input type="text" name="modelo" placeholder="Modelo" class="w-full p-3 border border-gray-300 rounded-lg" data-placeholder="INPUT_MODELO">
+                                        <input type="text" name="versao" placeholder="Versão" class="w-full p-3 border border-gray-300 rounded-lg" data-placeholder="INPUT_VERSAO">
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <input type="number" name="ano" placeholder="Ano" class="p-3 border border-gray-300 rounded-lg" data-placeholder="INPUT_ANO">
+                                    <input type="text" name="km" placeholder="KM" class="p-3 border border-gray-300 rounded-lg" data-placeholder="INPUT_KM">
+                                    <input type="text" name="cor" placeholder="Cor" class="p-3 border border-gray-300 rounded-lg" data-placeholder="INPUT_COR">
+                                    <select name="combustivel" class="p-3 border border-gray-300 rounded-lg" data-placeholder="SELECT_COMBUSTIVEL">
+                                        <option value="">Combustível</option>
+                                        <option value="Flex">Flex</option>
+                                        <option value="Gasolina">Gasolina</option>
+                                        <option value="Diesel">Diesel</option>
+                                        <option value="Elétrico">Elétrico</option>
+                                        <option value="Híbrido">Híbrido</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                    <select name="transmissao" class="p-3 border border-gray-300 rounded-lg" data-placeholder="SELECT_TRANSMISSAO">
+                                        <option value="">Transmissão</option>
+                                        <option value="Manual">Manual</option>
+                                        <option value="Automático">Automático</option>
+                                        <option value="CVT">CVT</option>
+                                    </select>
+                                    <input type="text" name="preco" placeholder="Preço (R$)" class="p-3 border border-gray-300 rounded-lg" data-placeholder="INPUT_PRECO">
+                                    <select name="condicao" class="p-3 border border-gray-300 rounded-lg" data-placeholder="SELECT_CONDICAO">
+                                        <option value="">Condição</option>
+                                        <option value="novo">Novo</option>
+                                        <option value="usado">Usado</option>
+                                    </select>
+                                    <select name="status" class="p-3 border border-gray-300 rounded-lg" data-placeholder="SELECT_STATUS">
+                                        <option value="">Status</option>
+                                        <option value="estoque">Em Estoque</option>
+                                        <option value="vendido">Vendido</option>
+                                        <option value="reservado">Reservado</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="flex items-center space-x-4">
+                                    <label class="flex items-center space-x-2" data-placeholder="CHECKBOX_PREMIUM">
+                                        <input type="checkbox" name="premium" class="w-4 h-4 text-red-600">
+                                        <span>Veículo Premium (Vitrine)</span>
+                                    </label>
+                                </div>
+                                
+                                <textarea name="observacoes" placeholder="Observações" rows="3" class="w-full p-3 border border-gray-300 rounded-lg" data-placeholder="TEXTAREA_OBSERVACOES"></textarea>
+                                
+                                <div class="flex space-x-4">
+                                    <button type="submit" class="btn-primary px-6 py-3 rounded-lg font-bold text-white" data-placeholder="BOTAO_SALVAR_VEICULO">
+                                        <i class="fas fa-save mr-2"></i>Salvar Veículo
+                                    </button>
+                                    <button type="button" onclick="clearVehicleForm()" class="btn-secondary px-6 py-3 rounded-lg font-bold" data-placeholder="BOTAO_LIMPAR_FORM">
+                                        <i class="fas fa-eraser mr-2"></i>Limpar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Lista de Veículos Cadastrados -->
+                        <div class="luxury-card p-6 rounded-xl text-black" data-placeholder="CARD_LISTA_VEICULOS">
+                            <h4 class="text-xl font-bold mb-6" data-placeholder="TITULO_LISTA_VEICULOS">Veículos Cadastrados</h4>
+                            <div id="vehicleList" class="space-y-4 max-h-96 overflow-y-auto" data-placeholder="LISTA_VEICULOS_ADMIN">
+                                <!-- Lista será populada via JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Configurações -->
+                <div id="adminSettings" class="admin-section" data-placeholder="SECAO_CONFIGURACOES">
+                    <h2 class="text-4xl font-black text-black mb-8" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_CONFIGURACOES">
+                        Configurações do <span class="text-red-600">Sistema</span>
+                    </h2>
+                    
+                    <div class="luxury-card p-8 rounded-xl text-black mb-8" data-placeholder="CARD_ALTERAR_CREDENCIAIS">
+                        <h4 class="text-2xl font-bold mb-6 text-red-600" data-placeholder="TITULO_ALTERAR_CREDENCIAIS">🔐 ALTERAR CREDENCIAIS DE ACESSO</h4>
+                        
+                        <form id="credentialsForm" class="space-y-6" data-placeholder="FORMULARIO_CREDENCIAIS">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="newUsername" class="block font-semibold mb-3" data-placeholder="LABEL_NOVO_USUARIO">Novo Usuário</label>
+                                    <input type="text" id="newUsername" name="newUsername" 
+                                           class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-600 focus:outline-none" 
+                                           placeholder="Digite o novo usuário" data-placeholder="INPUT_NOVO_USUARIO">
+                                </div>
+                                <div>
+                                    <label for="newPassword" class="block font-semibold mb-3" data-placeholder="LABEL_NOVA_SENHA">Nova Senha</label>
+                                    <input type="password" id="newPassword" name="newPassword" 
+                                           class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-600 focus:outline-none" 
+                                           placeholder="Digite a nova senha" data-placeholder="INPUT_NOVA_SENHA">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="confirmPassword" class="block font-semibold mb-3" data-placeholder="LABEL_CONFIRMAR_SENHA">Confirmar Nova Senha</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" 
+                                       class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-600 focus:outline-none" 
+                                       placeholder="Confirme a nova senha" data-placeholder="INPUT_CONFIRMAR_SENHA">
+                            </div>
+                            
+                            <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4" data-placeholder="AVISO_CREDENCIAIS">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                                    <div>
+                                        <h5 class="font-bold text-yellow-800" data-placeholder="TITULO_AVISO">ATENÇÃO!</h5>
+                                        <p class="text-sm text-yellow-700" data-placeholder="TEXTO_AVISO">Anote as novas credenciais em local seguro. Você precisará delas para acessar o sistema.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-4">
+                                <button type="submit" class="btn-primary px-8 py-4 rounded-xl font-bold text-white" data-placeholder="BOTAO_ALTERAR_CREDENCIAIS">
+                                    <i class="fas fa-key mr-2"></i>Alterar Credenciais
+                                </button>
+                                <button type="button" onclick="showCurrentCredentials()" class="btn-secondary px-8 py-4 rounded-xl font-bold" data-placeholder="BOTAO_VER_ATUAIS">
+                                    <i class="fas fa-eye mr-2"></i>Ver Credenciais Atuais
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Credenciais Atuais -->
+                    <div id="currentCredentials" class="luxury-card p-6 rounded-xl text-black hidden" data-placeholder="CARD_CREDENCIAIS_ATUAIS">
+                        <h4 class="text-xl font-bold mb-4 text-blue-600" data-placeholder="TITULO_CREDENCIAIS_ATUAIS">📋 CREDENCIAIS ATUAIS</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 p-4 rounded-lg" data-placeholder="USUARIO_ATUAL">
+                                <label class="block text-sm font-semibold text-gray-600 mb-1">Usuário Atual:</label>
+                                <div class="font-mono text-lg" id="currentUsernameDisplay" data-placeholder="DISPLAY_USUARIO_ATUAL">JR REPASSES VENDAS DE VEÍCULOS SP</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg" data-placeholder="SENHA_ATUAL">
+                                <label class="block text-sm font-semibold text-gray-600 mb-1">Senha Atual:</label>
+                                <div class="font-mono text-lg" id="currentPasswordDisplay" data-placeholder="DISPLAY_SENHA_ATUAL">lui0402*</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Configurações de Contato -->
+                    <div class="luxury-card p-8 rounded-xl text-black mb-8" data-placeholder="CARD_CONFIG_CONTATO">
+                        <h4 class="text-2xl font-bold mb-6 text-red-600" data-placeholder="TITULO_CONFIG_CONTATO">📞 CONFIGURAÇÕES DE CONTATO</h4>
+                        
+                        <form id="contactForm" class="space-y-6" data-placeholder="FORMULARIO_CONTATO">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="whatsappNumber" class="block font-semibold mb-3" data-placeholder="LABEL_WHATSAPP">Número WhatsApp</label>
+                                    <input type="text" id="whatsappNumber" name="whatsappNumber" 
+                                           class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-600 focus:outline-none" 
+                                           placeholder="(11) 99999-9999" data-placeholder="INPUT_WHATSAPP">
+                                </div>
+                                <div>
+                                    <label for="contactEmail" class="block font-semibold mb-3" data-placeholder="LABEL_EMAIL_CONTATO">E-mail de Contato</label>
+                                    <input type="email" id="contactEmail" name="contactEmail" 
+                                           class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-600 focus:outline-none" 
+                                           placeholder="contato@jrrepasses.com.br" data-placeholder="INPUT_EMAIL_CONTATO">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="instagramHandle" class="block font-semibold mb-3" data-placeholder="LABEL_INSTAGRAM">Instagram</label>
+                                    <input type="text" id="instagramHandle" name="instagramHandle" 
+                                           class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-600 focus:outline-none" 
+                                           placeholder="@jrrepasses" data-placeholder="INPUT_INSTAGRAM">
+                                </div>
+                                <div>
+                                    <label for="facebookPage" class="block font-semibold mb-3" data-placeholder="LABEL_FACEBOOK">Facebook</label>
+                                    <input type="text" id="facebookPage" name="facebookPage" 
+                                           class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-600 focus:outline-none" 
+                                           placeholder="JR Repasses SP" data-placeholder="INPUT_FACEBOOK">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="locationAddress" class="block font-semibold mb-3" data-placeholder="LABEL_ENDERECO">Endereço da Loja</label>
+                                <input type="text" id="locationAddressInput" name="locationAddress" 
+                                       class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-red-600 focus:outline-none" 
+                                       placeholder="Rua Exemplo, 123 - São Paulo - SP" data-placeholder="INPUT_ENDERECO">
+                            </div>
+                            
+                            <div>
+                                <label for="locationImageInput" class="block font-semibold mb-3" data-placeholder="LABEL_FOTO_LOJA">Foto da Loja</label>
+                                <div class="flex items-center space-x-4">
+                                    <input type="file" id="locationImageInput" accept="image/*" class="hidden" onchange="previewLocationImage(this)">
+                                    <button type="button" onclick="document.getElementById('locationImageInput').click()" 
+                                            class="btn-secondary px-6 py-3 rounded-lg font-bold" data-placeholder="BOTAO_ESCOLHER_FOTO">
+                                        <i class="fas fa-camera mr-2"></i>Escolher Foto
+                                    </button>
+                                    <button type="button" onclick="removeLocationImage()" 
+                                            class="btn-secondary px-6 py-3 rounded-lg font-bold" data-placeholder="BOTAO_REMOVER_FOTO">
+                                        <i class="fas fa-trash mr-2"></i>Remover Foto
+                                    </button>
+                                </div>
+                                <div id="locationImagePreview" class="mt-4 hidden">
+                                    <img id="locationPreviewImg" src="" alt="Preview da Loja" class="w-32 h-24 object-cover rounded-lg border-2 border-gray-300">
+                                </div>
+                            </div>
+                            
+                            <div class="flex space-x-4">
+                                <button type="submit" class="btn-primary px-8 py-4 rounded-xl font-bold text-white" data-placeholder="BOTAO_SALVAR_CONTATO">
+                                    <i class="fas fa-save mr-2"></i>Salvar Configurações
+                                </button>
+                                <button type="button" onclick="loadCurrentContactInfo()" class="btn-secondary px-8 py-4 rounded-xl font-bold" data-placeholder="BOTAO_VER_ATUAIS_CONTATO">
+                                    <i class="fas fa-eye mr-2"></i>Ver Configurações Atuais
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Controle da Loja -->
+                <div id="adminControl" class="admin-section" data-placeholder="SECAO_CONTROLE_LOJA">
+                    <h2 class="text-4xl font-black text-black mb-8" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_CONTROLE_LOJA">
+                        Controle da <span class="text-red-600">Loja</span>
+                    </h2>
+                    
+                    <!-- Integração Google Sheets -->
+                    <div class="luxury-card p-6 rounded-xl text-black mb-8" data-placeholder="CARD_GOOGLE_SHEETS">
+                        <h4 class="text-xl font-bold mb-4 text-red-600" data-placeholder="TITULO_GOOGLE_SHEETS">🔗 INTEGRAÇÃO GOOGLE SHEETS</h4>
+                        <div class="flex items-center space-x-4">
+                            <input type="url" placeholder="Cole aqui o link do seu Google Sheets" class="flex-1 p-3 border border-gray-300 rounded-lg text-sm" data-placeholder="INPUT_GOOGLE_SHEETS">
+                            <button class="btn-primary px-6 py-3 rounded-lg font-bold text-white text-sm" data-placeholder="BOTAO_CONECTAR_SHEETS">
+                                <i class="fas fa-link mr-2"></i>Conectar
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-2" data-placeholder="INSTRUCAO_SHEETS">
+                            Crie uma planilha no Google Sheets com as mesmas colunas da tabela abaixo e cole o link aqui para sincronização automática.
+                        </p>
+                    </div>
+                    
+                    <!-- Tabela de Controle -->
+                    <div class="control-table overflow-x-auto" id="TABELA_CONTROLE_LOJA">
+                        <table class="w-full">
+                            <thead>
+                                <tr>
+                                    <th data-placeholder="COLUNA_ID">ID</th>
+                                    <th data-placeholder="COLUNA_MODELO">MODELO</th>
+                                    <th data-placeholder="COLUNA_DATA_ENTRADA">DATA ENTRADA</th>
+                                    <th data-placeholder="COLUNA_DATA_SAIDA">DATA SAÍDA</th>
+                                    <th data-placeholder="COLUNA_COMPRADOR">COMPRADOR</th>
+                                    <th data-placeholder="COLUNA_PAGAMENTO">PAGAMENTO</th>
+                                    <th data-placeholder="COLUNA_PARCELAS">PARCELAS</th>
+                                    <th data-placeholder="COLUNA_VALOR">VALOR TOTAL</th>
+                                    <th data-placeholder="COLUNA_STATUS_PAG">STATUS PAG.</th>
+                                    <th data-placeholder="COLUNA_OBSERVACOES">OBS.</th>
+                                    <th data-placeholder="COLUNA_ACOES">AÇÕES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="controlTable" data-placeholder="CORPO_TABELA_CONTROLE">
+                                <!-- Exemplo de linha editável -->
+                                <tr data-placeholder="LINHA_EXEMPLO_001">
+                                    <td contenteditable="true" data-placeholder="CELULA_ID_001">001</td>
+                                    <td contenteditable="true" data-placeholder="CELULA_MODELO_001">TOYOTA COROLLA XEI 2023</td>
+                                    <td contenteditable="true" data-placeholder="CELULA_ENTRADA_001">15/01/2025</td>
+                                    <td contenteditable="true" data-placeholder="CELULA_SAIDA_001">20/01/2025</td>
+                                    <td contenteditable="true" data-placeholder="CELULA_COMPRADOR_001">João Silva</td>
+                                    <td contenteditable="true" data-placeholder="CELULA_PAGAMENTO_001">Financiado</td>
+                                    <td contenteditable="true" data-placeholder="CELULA_PARCELAS_001">48x</td>
+                                    <td contenteditable="true" data-placeholder="CELULA_VALOR_001">R$ 89.900</td>
+                                    <td><span class="status-badge payment-status-pago" data-placeholder="CELULA_STATUS_001">PAGO</span></td>
+                                    <td contenteditable="true" data-placeholder="CELULA_OBS_001">Primeira parcela paga</td>
+                                    <td>
+                                        <button onclick="deleteRow(this)" class="text-red-600 hover:text-red-800" data-placeholder="BOTAO_EXCLUIR_LINHA">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Botões de Ação -->
+                    <div class="flex flex-wrap justify-center gap-4 mt-8" data-placeholder="BOTOES_ACAO_TABELA">
+                        <button onclick="addNewRow()" class="btn-primary px-6 py-3 rounded-lg font-bold text-white" data-placeholder="BOTAO_ADICIONAR_LINHA">
+                            <i class="fas fa-plus mr-2"></i>Adicionar Linha
+                        </button>
+                        <button onclick="exportToCSV()" class="btn-secondary px-6 py-3 rounded-lg font-bold" data-placeholder="BOTAO_EXPORTAR_CSV">
+                            <i class="fas fa-download mr-2"></i>Exportar CSV
+                        </button>
+                        <button onclick="shareData()" class="btn-secondary px-6 py-3 rounded-lg font-bold" data-placeholder="BOTAO_COMPARTILHAR">
+                            <i class="fas fa-share-alt mr-2"></i>Compartilhar
+                        </button>
+                        <button onclick="saveData()" class="btn-primary px-6 py-3 rounded-lg font-bold text-white" data-placeholder="BOTAO_SALVAR_DADOS">
+                            <i class="fas fa-save mr-2"></i>Salvar Dados
+                        </button>
+                        <button onclick="printTable()" class="btn-secondary px-6 py-3 rounded-lg font-bold" data-placeholder="BOTAO_IMPRIMIR">
+                            <i class="fas fa-print mr-2"></i>Imprimir
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Instruções -->
+                <div id="adminInstructions" class="admin-section" data-placeholder="SECAO_INSTRUCOES">
+                    <h2 class="text-4xl font-black text-black mb-8" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_INSTRUCOES">
+                        Instruções de <span class="text-red-600">Uso</span>
+                    </h2>
+                    
+                    <div class="instructions-panel text-black" data-placeholder="PAINEL_INSTRUCOES">
+                        <h3 class="text-2xl font-bold mb-6 mt-4" style="font-family: 'Oswald', sans-serif;" data-placeholder="SUBTITULO_INSTRUCOES">Como Usar Este Sistema</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" data-placeholder="GRID_INSTRUCOES">
+                            <div data-placeholder="INSTRUCOES_VEICULOS">
+                                <h4 class="text-lg font-bold mb-4 text-red-600" data-placeholder="TITULO_INSTRUCOES_VEICULOS">🚗 GERENCIAR VEÍCULOS</h4>
+                                <ul class="space-y-2 text-sm" data-placeholder="LISTA_INSTRUCOES_VEICULOS">
+                                    <li>• Acesse "Gerenciar Veículos" no menu lateral</li>
+                                    <li>• Preencha todos os campos do formulário</li>
+                                    <li>• Marque "Premium" para veículos da vitrine</li>
+                                    <li>• Clique em "Salvar Veículo" para adicionar</li>
+                                    <li>• Use "Editar" na lista para modificar veículos</li>
+                                    <li>• Use "Excluir" para remover veículos vendidos</li>
+                                </ul>
+                            </div>
+                            
+                            <div data-placeholder="INSTRUCOES_CONTROLE">
+                                <h4 class="text-lg font-bold mb-4 text-red-600" data-placeholder="TITULO_INSTRUCOES_CONTROLE">📊 CONTROLE DA LOJA</h4>
+                                <ul class="space-y-2 text-sm" data-placeholder="LISTA_INSTRUCOES_CONTROLE">
+                                    <li>• Acesse "Controle da Loja" no menu lateral</li>
+                                    <li>• Edite diretamente nas células da tabela</li>
+                                    <li>• Use "Adicionar Linha" para novos registros</li>
+                                    <li>• Exporte dados em CSV quando necessário</li>
+                                    <li>• Conecte com Google Sheets para backup</li>
+                                    <li>• Salve regularmente as alterações</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 p-6 bg-red-50 border-2 border-red-200 rounded-xl" data-placeholder="DICAS_IMPORTANTES">
+                            <h4 class="font-bold mb-3 text-red-600" data-placeholder="TITULO_DICAS">💡 DICAS IMPORTANTES</h4>
+                            <ul class="space-y-2 text-sm" data-placeholder="LISTA_DICAS">
+                                <li>• Sempre faça backup dos dados importantes</li>
+                                <li>• Mantenha as informações dos veículos atualizadas</li>
+                                <li>• Use fotos de alta qualidade para melhor apresentação</li>
+                                <li>• Atualize o status dos veículos (estoque/vendido/reservado)</li>
+                                <li>• Monitore regularmente o dashboard para acompanhar vendas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PÁGINA ESTOQUE COMPLETO -->
+    <div id="estoque" class="page pt-24">
+        <section class="py-20 bg-black" data-placeholder="PAGINA_ESTOQUE">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl md:text-6xl font-black mb-6" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_ESTOQUE_COMPLETO">
+                        Estoque <span class="text-red-600">Completo</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-placeholder="SUBTITULO_ESTOQUE_COMPLETO">Todos os nossos veículos disponíveis</p>
+                </div>
+                
+                <!-- Filtros -->
+                <div class="luxury-card p-6 rounded-xl mb-12 text-black" data-placeholder="FILTROS_ESTOQUE">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <select id="filterMarca" class="p-3 border border-gray-300 rounded-lg" data-placeholder="FILTRO_MARCA">
+                            <option value="">Todas as Marcas</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Honda">Honda</option>
+                            <option value="Volkswagen">Volkswagen</option>
+                            <option value="Chevrolet">Chevrolet</option>
+                        </select>
+                        <select id="filterAno" class="p-3 border border-gray-300 rounded-lg" data-placeholder="FILTRO_ANO">
+                            <option value="">Todos os Anos</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
+                        <select id="filterPreco" class="p-3 border border-gray-300 rounded-lg" data-placeholder="FILTRO_PRECO">
+                            <option value="">Todas as Faixas</option>
+                            <option value="0-50000">Até R$ 50.000</option>
+                            <option value="50000-100000">R$ 50.000 - R$ 100.000</option>
+                            <option value="100000-200000">R$ 100.000 - R$ 200.000</option>
+                            <option value="200000+">Acima de R$ 200.000</option>
+                        </select>
+                        <select id="filterCombustivel" class="p-3 border border-gray-300 rounded-lg" data-placeholder="FILTRO_COMBUSTIVEL">
+                            <option value="">Todos os Combustíveis</option>
+                            <option value="Flex">Flex</option>
+                            <option value="Gasolina">Gasolina</option>
+                            <option value="Diesel">Diesel</option>
+                        </select>
+                        <button onclick="applyFilters()" class="btn-primary px-6 py-3 rounded-lg font-bold text-white" data-placeholder="BOTAO_FILTRAR">
+                            <i class="fas fa-filter mr-2"></i>Filtrar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="estoqueCompleto" data-placeholder="GRID_ESTOQUE_COMPLETO">
+                    <!-- Veículos serão carregados aqui -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PÁGINA VITRINE PREMIUM -->
+    <div id="vitrine" class="page pt-24">
+        <section class="py-20 bg-gradient-to-b from-black to-gray-900" data-placeholder="PAGINA_VITRINE">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl md:text-6xl font-black mb-6" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_VITRINE_COMPLETA">
+                        Vitrine <span class="text-red-600">Premium</span>
+                    </h2>
+                    <p class="text-xl text-gray-300 max-w-3xl mx-auto" data-placeholder="SUBTITULO_VITRINE_COMPLETA">Carros de luxo e alta performance</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="vitrinePremium" data-placeholder="GRID_VITRINE_COMPLETA">
+                    <!-- Veículos premium serão carregados aqui -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PÁGINA SOBRE NÓS -->
+    <div id="sobre" class="page pt-24">
+        <section class="py-20 bg-black" data-placeholder="PAGINA_SOBRE">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl md:text-6xl font-black mb-6" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_SOBRE">
+                        Sobre <span class="text-red-600">Nós</span>
+                    </h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center" data-placeholder="CONTEUDO_SOBRE">
+                    <div data-placeholder="TEXTO_SOBRE">
+                        <h3 class="text-4xl font-bold mb-8" style="font-family: 'Oswald', sans-serif;" data-placeholder="SUBTITULO_HISTORIA">Nossa História</h3>
+                        <p class="text-lg text-gray-300 mb-6 leading-relaxed" data-placeholder="PARAGRAFO_01_SOBRE">
+                            A JR Repasses e Vendas de Veículos SP é referência em transparência e confiança no mercado automotivo paulista.
+                        </p>
+                        <p class="text-lg text-gray-300 mb-8 leading-relaxed" data-placeholder="PARAGRAFO_02_SOBRE">
+                            Nossa missão é conectar você ao veículo dos seus sonhos com total segurança e transparência.
+                        </p>
+                    </div>
+                    
+                    <div class="luxury-card rounded-2xl p-12 text-center text-black" data-placeholder="CARD_LOJA">
+                        <div class="text-8xl mb-8 text-red-600" data-placeholder="ICONE_LOJA">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-6" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_LOJA">Nossa Loja</h3>
+                        <p class="text-gray-600 mb-8 text-lg" data-placeholder="DESCRICAO_LOJA">Showroom premium em São Paulo</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PÁGINA CONTATO -->
+    <div id="contato" class="page pt-24">
+        <section class="py-20 bg-black" data-placeholder="PAGINA_CONTATO">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl md:text-6xl font-black mb-6" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_CONTATO">
+                        Entre em <span class="text-red-600">Contato</span>
+                    </h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16" data-placeholder="CONTEUDO_CONTATO">
+                    <div class="space-y-8" id="CONTATO_ICONS_SOCIAIS">
+                        <div class="flex items-center space-x-6 luxury-card p-6 rounded-xl text-black">
+                            <div class="w-16 h-16 bg-red-600 rounded-xl flex items-center justify-center">
+                                <i class="fab fa-whatsapp text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">WhatsApp</div>
+                                <div class="text-red-600 text-xl font-bold">(11) 99999-9999</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-6 luxury-card p-6 rounded-xl text-black">
+                            <div class="w-16 h-16 bg-red-600 rounded-xl flex items-center justify-center">
+                                <i class="fab fa-instagram text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">Instagram</div>
+                                <div class="text-red-600 text-xl font-bold">@jrrepasses</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-6 luxury-card p-6 rounded-xl text-black">
+                            <div class="w-16 h-16 bg-red-600 rounded-xl flex items-center justify-center">
+                                <i class="fab fa-facebook text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">Facebook</div>
+                                <div class="text-red-600 text-xl font-bold">JR Repasses SP</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-6 luxury-card p-6 rounded-xl text-black">
+                            <div class="w-16 h-16 bg-red-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-envelope text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <div class="font-bold text-lg">E-mail</div>
+                                <div class="text-red-600 text-xl font-bold" id="CONTATO_EMAIL_DISPLAY">contato@jrrepasses.com.br</div>
+                            </div>
+                        </div>
+                        
+                        <div class="luxury-card p-6 rounded-xl text-black" id="CONTATO_MAPA">
+                            <div class="h-48 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden" id="locationDisplay">
+                                <div class="text-center text-gray-500" id="defaultLocation">
+                                    <i class="fas fa-map-marker-alt text-4xl mb-2"></i>
+                                    <p class="font-bold" id="locationTitle">Localização</p>
+                                    <p class="text-sm" id="locationAddress">São Paulo - SP</p>
+                                </div>
+                                <img id="locationImage" src="" alt="Localização da Loja" class="w-full h-full object-cover hidden">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="luxury-card rounded-2xl p-8 text-black">
+                        <h3 class="text-3xl font-bold mb-8" style="font-family: 'Oswald', sans-serif;">Envie uma Mensagem</h3>
+                        <form class="space-y-6">
+                            <div>
+                                <label for="nome" class="block font-semibold mb-2">Nome</label>
+                                <input type="text" id="CONTATO_NOME" name="nome" placeholder="Seu Nome" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4">
+                            </div>
+                            <div>
+                                <label for="email" class="block font-semibold mb-2">E-mail</label>
+                                <input type="email" id="CONTATO_EMAIL" name="email" placeholder="Seu E-mail" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4">
+                            </div>
+                            <div>
+                                <label for="telefone" class="block font-semibold mb-2">Telefone</label>
+                                <input type="tel" id="CONTATO_TELEFONE" name="telefone" placeholder="Seu Telefone" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4">
+                            </div>
+                            <div>
+                                <label for="mensagem" class="block font-semibold mb-2">Mensagem</label>
+                                <textarea id="CONTATO_MSG" name="mensagem" placeholder="Sua Mensagem" rows="5" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4"></textarea>
+                            </div>
+                            <button type="submit" class="w-full btn-primary py-5 rounded-xl font-bold text-white text-lg">
+                                <i class="fas fa-paper-plane mr-3"></i>Enviar Mensagem
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PÁGINA ANUNCIAR VEÍCULO -->
+    <div id="anunciar" class="page pt-24">
+        <section class="py-20 bg-black" data-placeholder="PAGINA_ANUNCIAR">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl md:text-6xl font-black mb-6" style="font-family: 'Oswald', sans-serif;" data-placeholder="TITULO_ANUNCIAR">
+                        Anunciar Meu <span class="text-red-600">Veículo</span>
+                    </h2>
+                </div>
+                
+                <div class="max-w-4xl mx-auto" data-placeholder="CONTAINER_ANUNCIAR">
+                    <div class="luxury-card rounded-2xl p-12 text-black" data-placeholder="FORMULARIO_ANUNCIAR">
+                        <form class="space-y-8" data-placeholder="FORM_ANUNCIAR">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="nomeAnuncio" class="block font-semibold mb-2" data-placeholder="LABEL_NOME_ANUNCIO">Seu Nome</label>
+                                    <input type="text" id="nomeAnuncio" name="nome" placeholder="Seu Nome" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4" data-placeholder="INPUT_NOME_ANUNCIO">
+                                </div>
+                                <div>
+                                    <label for="telefoneAnuncio" class="block font-semibold mb-2" data-placeholder="LABEL_TELEFONE_ANUNCIO">Seu Telefone</label>
+                                    <input type="tel" id="telefoneAnuncio" name="telefone" placeholder="Seu Telefone" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4" data-placeholder="INPUT_TELEFONE_ANUNCIO">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="emailAnuncio" class="block font-semibold mb-2" data-placeholder="LABEL_EMAIL_ANUNCIO">Seu E-mail</label>
+                                <input type="email" id="emailAnuncio" name="email" placeholder="Seu E-mail" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4" data-placeholder="INPUT_EMAIL_ANUNCIO">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label for="marcaAnuncio" class="block font-semibold mb-2" data-placeholder="LABEL_MARCA_ANUNCIO">Marca</label>
+                                    <input type="text" id="marcaAnuncio" name="marca" placeholder="Marca" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4" data-placeholder="INPUT_MARCA_ANUNCIO">
+                                </div>
+                                <div>
+                                    <label for="modeloAnuncio" class="block font-semibold mb-2" data-placeholder="LABEL_MODELO_ANUNCIO">Modelo</label>
+                                    <input type="text" id="modeloAnuncio" name="modelo" placeholder="Modelo" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4" data-placeholder="INPUT_MODELO_ANUNCIO">
+                                </div>
+                                <div>
+                                    <label for="anoAnuncio" class="block font-semibold mb-2" data-placeholder="LABEL_ANO_ANUNCIO">Ano</label>
+                                    <input type="number" id="anoAnuncio" name="ano" placeholder="Ano" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4" data-placeholder="INPUT_ANO_ANUNCIO">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="observacoesAnuncio" class="block font-semibold mb-2" data-placeholder="LABEL_OBSERVACOES_ANUNCIO">Observações</label>
+                                <textarea id="observacoesAnuncio" name="observacoes" placeholder="Observações sobre o veículo" rows="5" class="w-full border-2 border-gray-300 rounded-xl px-6 py-4" data-placeholder="TEXTAREA_OBSERVACOES_ANUNCIO"></textarea>
+                            </div>
+                            <button type="submit" class="w-full btn-primary py-5 rounded-xl font-bold text-white text-lg" data-placeholder="BOTAO_ENVIAR_PROPOSTA">
+                                <i class="fas fa-paper-plane mr-3"></i>Enviar Proposta
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="bg-black border-t-2 border-red-600 py-16" data-placeholder="RODAPE">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-red-600 to-red-700 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-car-side text-white text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold" style="font-family: 'Oswald', sans-serif;">JR REPASSES</h3>
+                            <p class="text-sm text-gray-300">VENDAS DE VEÍCULOS SP</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6" style="font-family: 'Oswald', sans-serif;">LINKS ÚTEIS</h4>
+                    <ul class="space-y-3 text-gray-300" id="RODAPE_LINKS">
+                        <li><a href="#" onclick="showPage('home')" class="hover:text-red-600 transition-colors">Início</a></li>
+                        <li><a href="#" onclick="showPage('estoque')" class="hover:text-red-600 transition-colors">Estoque</a></li>
+                        <li><a href="#" onclick="showPage('sobre')" class="hover:text-red-600 transition-colors">Sobre Nós</a></li>
+                        <li><a href="#" onclick="showPage('contato')" class="hover:text-red-600 transition-colors">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6" style="font-family: 'Oswald', sans-serif;">SERVIÇOS</h4>
+                    <ul class="space-y-3 text-gray-300">
+                        <li><a href="#" onclick="showPage('anunciar')" class="hover:text-red-600 transition-colors">Anunciar Veículo</a></li>
+                        <li><a href="#" class="hover:text-red-600 transition-colors">Financiamento</a></li>
+                        <li><a href="#" class="hover:text-red-600 transition-colors">Avaliação</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6" style="font-family: 'Oswald', sans-serif;">REDES SOCIAIS</h4>
+                    <div class="flex space-x-4 mb-6" id="RODAPE_ICONS_SOCIAIS">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="w-14 h-14 bg-red-600 rounded-xl flex items-center justify-center hover:bg-red-700 transition-colors">
+                            <i class="fab fa-instagram text-white text-xl"></i>
+                        </a>
+                        <a href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer" class="w-14 h-14 bg-red-600 rounded-xl flex items-center justify-center hover:bg-red-700 transition-colors">
+                            <i class="fab fa-whatsapp text-white text-xl"></i>
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="w-14 h-14 bg-red-600 rounded-xl flex items-center justify-center hover:bg-red-700 transition-colors">
+                            <i class="fab fa-facebook text-white text-xl"></i>
+                        </a>
+                    </div>
+                    
+                    <!-- Link discreto para área administrativa -->
+                    <div class="mt-8">
+                        <a href="#" onclick="showPage('login')" class="text-xs text-gray-500 hover:text-red-600 transition-colors" id="RODAPE_BTN_LOGIN_ADM">
+                            <i class="fas fa-lock mr-1"></i>Área do Administrador (Login)
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ícones de Pagamento -->
+            <div class="flex justify-center space-x-6 mb-8">
+                <div class="w-12 h-8 bg-green-600 rounded flex items-center justify-center" id="ICON_PIX">
+                    <i class="fab fa-pix text-white text-sm"></i>
+                </div>
+                <div class="w-12 h-8 bg-blue-600 rounded flex items-center justify-center" id="ICON_CARTAO">
+                    <i class="fas fa-credit-card text-white text-sm"></i>
+                </div>
+                <div class="w-12 h-8 bg-purple-600 rounded flex items-center justify-center" id="ICON_TRANSFERENCIA">
+                    <i class="fas fa-university text-white text-sm"></i>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p class="text-gray-300 text-lg" id="RODAPE_TEXTO">© 2025 JR Repasses e Vendas de Veículos SP — Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sistema de dados dos veículos
+        let vehicles = [
+            {
+                id: 1,
+                marca: "Toyota",
+                modelo: "Corolla XEI",
+                versao: "2.0",
+                ano: 2023,
+                km: "15.000 km",
+                cor: "Prata",
+                combustivel: "Flex",
+                transmissao: "Automático",
+                preco: 89900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Único dono, revisões em dia",
+                premium: false
+            },
+            {
+                id: 2,
+                marca: "Honda",
+                modelo: "Civic Sport",
+                versao: "1.5 Turbo",
+                ano: 2022,
+                km: "28.000 km",
+                cor: "Preto",
+                combustivel: "Flex",
+                transmissao: "Automático",
+                preco: 125900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Impecável, pneus novos",
+                premium: false
+            },
+            {
+                id: 3,
+                marca: "BMW",
+                modelo: "320i Sport",
+                versao: "2.0 Turbo",
+                ano: 2021,
+                km: "30.000 km",
+                cor: "Branco",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 189900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Pacote M, teto solar",
+                premium: true
+            },
+            {
+                id: 4,
+                marca: "Audi",
+                modelo: "A3 Sedan",
+                versao: "1.4 TFSI",
+                ano: 2022,
+                km: "22.000 km",
+                cor: "Azul",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 165900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Bancos de couro, multimídia",
+                premium: true
+            },
+            {
+                id: 5,
+                marca: "Mercedes-Benz",
+                modelo: "C180",
+                versao: "1.6 Turbo",
+                ano: 2020,
+                km: "45.000 km",
+                cor: "Prata",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 225900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Revisões na concessionária",
+                premium: true
+            },
+            {
+                id: 6,
+                marca: "Volkswagen",
+                modelo: "Jetta GLI",
+                versao: "2.0 TSI",
+                ano: 2023,
+                km: "8.000 km",
+                cor: "Branco",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 145900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Seminovo, garantia de fábrica",
+                premium: false
+            },
+            {
+                id: 7,
+                marca: "Hyundai",
+                modelo: "HB20S",
+                versao: "1.6 Comfort",
+                ano: 2022,
+                km: "35.000 km",
+                cor: "Vermelho",
+                combustivel: "Flex",
+                transmissao: "Automático",
+                preco: 68900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Econômico, ideal para cidade",
+                premium: false
+            },
+            {
+                id: 8,
+                marca: "Nissan",
+                modelo: "Sentra SV",
+                versao: "2.0",
+                ano: 2021,
+                km: "42.000 km",
+                cor: "Cinza",
+                combustivel: "Flex",
+                transmissao: "Automático",
+                preco: 78900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Porta-malas amplo, confortável",
+                premium: false
+            },
+            {
+                id: 9,
+                marca: "Ford",
+                modelo: "Mustang GT",
+                versao: "5.0 V8",
+                ano: 2019,
+                km: "25.000 km",
+                cor: "Amarelo",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 389900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Esportivo, colecionador",
+                premium: true
+            },
+            {
+                id: 10,
+                marca: "Chevrolet",
+                modelo: "Onix Plus",
+                versao: "1.0 Turbo",
+                ano: 2023,
+                km: "12.000 km",
+                cor: "Branco",
+                combustivel: "Flex",
+                transmissao: "Automático",
+                preco: 72900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Baixa quilometragem",
+                premium: false
+            },
+            {
+                id: 11,
+                marca: "Porsche",
+                modelo: "Macan",
+                versao: "2.0 Turbo",
+                ano: 2020,
+                km: "38.000 km",
+                cor: "Preto",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 459900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "SUV premium, impecável",
+                premium: true
+            },
+            {
+                id: 12,
+                marca: "Jeep",
+                modelo: "Compass",
+                versao: "2.0 Diesel",
+                ano: 2022,
+                km: "28.000 km",
+                cor: "Cinza",
+                combustivel: "Diesel",
+                transmissao: "Automático",
+                preco: 145900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "4x4, tração integral",
+                premium: false
+            },
+            {
+                id: 13,
+                marca: "Fiat",
+                modelo: "Argo HGT",
+                versao: "1.8",
+                ano: 2021,
+                km: "32.000 km",
+                cor: "Azul",
+                combustivel: "Flex",
+                transmissao: "Automático",
+                preco: 65900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Esportivo, econômico",
+                premium: false
+            },
+            {
+                id: 14,
+                marca: "Lexus",
+                modelo: "ES 300h",
+                versao: "Hybrid",
+                ano: 2021,
+                km: "18.000 km",
+                cor: "Prata",
+                combustivel: "Híbrido",
+                transmissao: "Automático",
+                preco: 289900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Híbrido, luxo japonês",
+                premium: true
+            },
+            {
+                id: 15,
+                marca: "Volvo",
+                modelo: "XC60",
+                versao: "2.0 T5",
+                ano: 2020,
+                km: "35.000 km",
+                cor: "Branco",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 245900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "SUV premium, segurança",
+                premium: true
+            },
+            {
+                id: 16,
+                marca: "Renault",
+                modelo: "Sandero RS",
+                versao: "2.0",
+                ano: 2022,
+                km: "15.000 km",
+                cor: "Laranja",
+                combustivel: "Flex",
+                transmissao: "Manual",
+                preco: 78900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Esportivo, manual",
+                premium: false
+            },
+            {
+                id: 17,
+                marca: "Mitsubishi",
+                modelo: "Eclipse Cross",
+                versao: "1.5 Turbo",
+                ano: 2021,
+                km: "29.000 km",
+                cor: "Vermelho",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 125900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "SUV compacto, moderno",
+                premium: false
+            },
+            {
+                id: 18,
+                marca: "Land Rover",
+                modelo: "Discovery Sport",
+                versao: "2.0 Turbo",
+                ano: 2019,
+                km: "48.000 km",
+                cor: "Verde",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 189900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Off-road, 7 lugares",
+                premium: true
+            },
+            {
+                id: 19,
+                marca: "Subaru",
+                modelo: "Forester",
+                versao: "2.0 XT",
+                ano: 2020,
+                km: "32.000 km",
+                cor: "Azul",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 165900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Tração integral, confiável",
+                premium: false
+            },
+            {
+                id: 20,
+                marca: "Jaguar",
+                modelo: "XE",
+                versao: "2.0 Turbo",
+                ano: 2019,
+                km: "38.000 km",
+                cor: "Preto",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 189900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Sedan premium inglês",
+                premium: true
+            },
+            {
+                id: 21,
+                marca: "Peugeot",
+                modelo: "208 GT",
+                versao: "1.6 Turbo",
+                ano: 2022,
+                km: "18.000 km",
+                cor: "Cinza",
+                combustivel: "Flex",
+                transmissao: "Automático",
+                preco: 85900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Hatch premium francês",
+                premium: false
+            },
+            {
+                id: 22,
+                marca: "Infiniti",
+                modelo: "Q50",
+                versao: "3.7 V6",
+                ano: 2018,
+                km: "45.000 km",
+                cor: "Prata",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 145900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Sedan esportivo japonês",
+                premium: true
+            },
+            {
+                id: 23,
+                marca: "Citroën",
+                modelo: "C4 Cactus",
+                versao: "1.6 Turbo",
+                ano: 2021,
+                km: "25.000 km",
+                cor: "Branco",
+                combustivel: "Flex",
+                transmissao: "Automático",
+                preco: 68900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Design único, confortável",
+                premium: false
+            },
+            {
+                id: 24,
+                marca: "Maserati",
+                modelo: "Ghibli",
+                versao: "3.0 V6",
+                ano: 2018,
+                km: "35.000 km",
+                cor: "Azul",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 389900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Luxo italiano, exclusivo",
+                premium: true
+            },
+            {
+                id: 25,
+                marca: "Alfa Romeo",
+                modelo: "Giulia",
+                versao: "2.0 Turbo",
+                ano: 2019,
+                km: "28.000 km",
+                cor: "Vermelho",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 225900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Esportivo italiano",
+                premium: true
+            },
+            {
+                id: 26,
+                marca: "Genesis",
+                modelo: "G80",
+                versao: "3.8 V6",
+                ano: 2020,
+                km: "22.000 km",
+                cor: "Preto",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 289900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Luxo coreano, tecnologia",
+                premium: true
+            },
+            {
+                id: 27,
+                marca: "Acura",
+                modelo: "TLX",
+                versao: "2.4 VTEC",
+                ano: 2019,
+                km: "32.000 km",
+                cor: "Cinza",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 165900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Sedan premium japonês",
+                premium: true
+            },
+            {
+                id: 28,
+                marca: "Cadillac",
+                modelo: "XT4",
+                versao: "2.0 Turbo",
+                ano: 2020,
+                km: "28.000 km",
+                cor: "Branco",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 225900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "SUV americano de luxo",
+                premium: true
+            },
+            {
+                id: 29,
+                marca: "Lincoln",
+                modelo: "Corsair",
+                versao: "2.3 Turbo",
+                ano: 2021,
+                km: "18.000 km",
+                cor: "Azul",
+                combustivel: "Gasolina",
+                transmissao: "Automático",
+                preco: 245900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "SUV premium americano",
+                premium: true
+            },
+            {
+                id: 30,
+                marca: "Tesla",
+                modelo: "Model 3",
+                versao: "Standard Range",
+                ano: 2022,
+                km: "15.000 km",
+                cor: "Branco",
+                combustivel: "Elétrico",
+                transmissao: "Automático",
+                preco: 289900,
+                condicao: "usado",
+                status: "estoque",
+                observacoes: "Elétrico, tecnologia avançada",
+                premium: true
+            }
+        ];
+
+        let isLoggedIn = false;
+        let currentAdminSection = 'dashboard';
+
+        // Credenciais de login (em produção, usar sistema seguro)
+        let adminCredentials = {
+            username: 'JR REPASSES VENDAS DE VEÍCULOS SP',
+            password: 'lui0402*'
+        };
+
+        // Configurações de contato
+        let contactSettings = {
+            whatsapp: '(11) 99999-9999',
+            email: 'contato@jrrepasses.com.br',
+            instagram: '@jrrepasses',
+            facebook: 'JR Repasses SP',
+            address: 'São Paulo - SP',
+            locationImage: null
+        };
+
+        // Função para mostrar páginas
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+            
+            if (pageId === 'estoque') {
+                loadEstoqueCompleto();
+            } else if (pageId === 'vitrine') {
+                loadVitrinePremium();
+            } else if (pageId === 'home') {
+                loadPublicVehicles();
+                loadPremiumShowcase();
+            }
+        }
+
+        // Sistema de login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                isLoggedIn = true;
+                showPage('admin');
+                loadAdminData();
+                
+                // Feedback visual de sucesso
+                const button = this.querySelector('button[type="submit"]');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check mr-2"></i>Login realizado!';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = '';
+                    this.reset();
+                }, 1500);
+            } else {
+                // Feedback visual de erro
+                const button = this.querySelector('button[type="submit"]');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-times mr-2"></i>Credenciais inválidas!';
+                button.style.background = '#dc3545';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.background = '';
+                }, 2000);
+            }
+        });
+
+        // Logout
+        function logout() {
+            // Criar modal de confirmação personalizado
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center">
+                    <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-sign-out-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-black mb-4">Sair do Sistema</h3>
+                    <p class="text-gray-600 mb-6">Deseja realmente sair do painel administrativo?</p>
+                    <div class="flex space-x-4">
+                        <button onclick="confirmLogout()" class="flex-1 bg-red-600 text-white py-3 px-6 rounded-lg font-bold hover:bg-red-700">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Sim, Sair
+                        </button>
+                        <button onclick="cancelLogout()" class="flex-1 bg-gray-300 text-gray-700 py-3 px-6 rounded-lg font-bold hover:bg-gray-400">
+                            <i class="fas fa-times mr-2"></i>Cancelar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Funções para o modal
+            window.confirmLogout = function() {
+                isLoggedIn = false;
+                
+                // Limpar dados de sessão
+                editingVehicleId = null;
+                currentVehicleImage = null;
+                
+                // Resetar formulários
+                document.getElementById('loginForm').reset();
+                if (document.getElementById('vehicleForm')) {
+                    clearVehicleForm();
+                }
+                
+                // Voltar para a home
+                showPage('home');
+                
+                // Remover modal
+                modal.remove();
+                
+                // Feedback visual de logout
+                showLogoutMessage();
+            };
+            
+            window.cancelLogout = function() {
+                modal.remove();
+            };
+        }
+        
+        // Mostrar mensagem de logout
+        function showLogoutMessage() {
+            const message = document.createElement('div');
+            message.className = 'fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50';
+            message.innerHTML = '<i class="fas fa-check mr-2"></i>Logout realizado com sucesso!';
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+
+        // Mostrar seções do admin
+        function showAdminSection(sectionId) {
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+                section.style.display = 'none';
+            });
+            
+            document.querySelectorAll('.admin-menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.getElementById('admin' + sectionId.charAt(0).toUpperCase() + sectionId.slice(1)).style.display = 'block';
+            document.getElementById('admin' + sectionId.charAt(0).toUpperCase() + sectionId.slice(1)).classList.add('active');
+            
+            event.target.classList.add('active');
+            currentAdminSection = sectionId;
+            
+            if (sectionId === 'vehicles') {
+                loadVehicleList();
+            } else if (sectionId === 'control') {
+                renderControlTable();
+                updateDashboard();
+            } else if (sectionId === 'dashboard') {
+                updateDashboard();
+            } else if (sectionId === 'settings') {
+                updateCredentialsDisplay();
+            }
+        }
+
+        // Mostrar credenciais atuais
+        function showCurrentCredentials() {
+            const credentialsDiv = document.getElementById('currentCredentials');
+            credentialsDiv.classList.toggle('hidden');
+            
+            if (!credentialsDiv.classList.contains('hidden')) {
+                updateCredentialsDisplay();
+            }
+        }
+
+        // Atualizar display das credenciais
+        function updateCredentialsDisplay() {
+            document.getElementById('currentUsernameDisplay').textContent = adminCredentials.username;
+            document.getElementById('currentPasswordDisplay').textContent = adminCredentials.password;
+        }
+
+        // Formulário de alteração de credenciais
+        document.addEventListener('DOMContentLoaded', function() {
+            const credentialsForm = document.getElementById('credentialsForm');
+            if (credentialsForm) {
+                credentialsForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const newUsername = document.getElementById('newUsername').value.trim();
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    // Validações
+                    if (!newUsername || !newPassword || !confirmPassword) {
+                        showCredentialsMessage('Todos os campos são obrigatórios!', 'error');
+                        return;
+                    }
+                    
+                    if (newPassword !== confirmPassword) {
+                        showCredentialsMessage('As senhas não coincidem!', 'error');
+                        return;
+                    }
+                    
+                    if (newPassword.length < 6) {
+                        showCredentialsMessage('A senha deve ter pelo menos 6 caracteres!', 'error');
+                        return;
+                    }
+                    
+                    // Confirmar alteração
+                    if (confirm('Tem certeza que deseja alterar as credenciais de acesso? Esta ação não pode ser desfeita.')) {
+                        // Atualizar credenciais
+                        adminCredentials.username = newUsername;
+                        adminCredentials.password = newPassword;
+                        
+                        // Limpar formulário
+                        this.reset();
+                        
+                        // Atualizar display
+                        updateCredentialsDisplay();
+                        
+                        // Mostrar sucesso
+                        showCredentialsMessage('Credenciais alteradas com sucesso! Anote-as em local seguro.', 'success');
+                        
+                        // Mostrar credenciais atualizadas
+                        document.getElementById('currentCredentials').classList.remove('hidden');
+                    }
+                });
+            }
+        });
+
+        // Mostrar mensagens do sistema de credenciais
+        function showCredentialsMessage(message, type) {
+            const button = document.querySelector('#credentialsForm button[type="submit"]');
+            const originalText = button.innerHTML;
+            
+            if (type === 'success') {
+                button.innerHTML = '<i class="fas fa-check mr-2"></i>' + message;
+                button.style.background = '#28a745';
+            } else {
+                button.innerHTML = '<i class="fas fa-times mr-2"></i>' + message;
+                button.style.background = '#dc3545';
+            }
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = '';
+            }, 4000);
+        }
+
+        // Carregar dados do admin
+        function loadAdminData() {
+            loadVehicleList();
+            updateDashboard();
+        }
+
+        // Carregar veículos na página inicial
+        function loadPublicVehicles() {
+            const container = document.getElementById('publicVehicleDisplay');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const availableVehicles = vehicles.filter(v => v.status === 'estoque').slice(0, 2);
+            
+            availableVehicles.forEach(vehicle => {
+                container.innerHTML += createVehicleCard(vehicle);
+            });
+        }
+
+        // Carregar showcase premium na home
+        function loadPremiumShowcase() {
+            const container = document.getElementById('premiumShowcase');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const premiumVehicles = vehicles.filter(v => v.premium && v.status === 'estoque').slice(0, 3);
+            
+            premiumVehicles.forEach(vehicle => {
+                container.innerHTML += createVehicleCard(vehicle, true);
+            });
+        }
+
+        // Carregar estoque completo
+        function loadEstoqueCompleto() {
+            const container = document.getElementById('estoqueCompleto');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const availableVehicles = vehicles.filter(v => v.status === 'estoque');
+            
+            availableVehicles.forEach(vehicle => {
+                container.innerHTML += createVehicleCard(vehicle);
+            });
+        }
+
+        // Carregar vitrine premium
+        function loadVitrinePremium() {
+            const container = document.getElementById('vitrinePremium');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const premiumVehicles = vehicles.filter(v => v.premium && v.status === 'estoque');
+            
+            premiumVehicles.forEach(vehicle => {
+                container.innerHTML += createVehicleCard(vehicle, true);
+            });
+        }
+
+        // Criar card do veículo
+        function createVehicleCard(vehicle, isPremium = false) {
+            const cardId = isPremium ? `VITRINE_CARD_${String(vehicle.id).padStart(2, '0')}` : `VEICULO_CARD_${String(vehicle.id).padStart(2, '0')}`;
+            const premiumBadge = isPremium ? '<div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold">PREMIUM</div>' : '';
+            
+            // Determinar conteúdo da imagem
+            const imageContent = vehicle.image ? 
+                `<img src="${vehicle.image}" alt="${vehicle.marca} ${vehicle.modelo}" class="w-full h-full object-cover">` :
+                `<div class="text-center text-gray-500">
+                    <i class="fas fa-car text-6xl mb-4"></i>
+                    <p class="font-bold">${vehicle.marca} ${vehicle.modelo}</p>
+                </div>`;
+            
+            return `
+                <div class="luxury-card rounded-2xl overflow-hidden shadow-2xl relative" id="${cardId}">
+                    ${premiumBadge}
+                    <div class="h-64 bg-gray-200 flex items-center justify-center overflow-hidden" id="${cardId}_IMAGEM">
+                        ${imageContent}
+                    </div>
+                    <div class="p-6 text-black">
+                        <h3 class="text-xl font-bold mb-3" style="font-family: 'Oswald', sans-serif;" id="${cardId}_MODELO">${vehicle.marca} ${vehicle.modelo} ${vehicle.versao}</h3>
+                        <div class="flex flex-wrap gap-3 mb-4 text-sm text-gray-600" id="${cardId}_ANO">
+                            <span><i class="fas fa-calendar mr-1"></i>${vehicle.ano}</span>
+                            <span id="${cardId}_KM"><i class="fas fa-tachometer-alt mr-1"></i>${vehicle.km}</span>
+                            <span><i class="fas fa-cog mr-1"></i>${vehicle.transmissao}</span>
+                            <span><i class="fas fa-gas-pump mr-1"></i>${vehicle.combustivel}</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-6">
+                            <div>
+                                <span class="text-3xl font-black text-red-600" id="${cardId}_PRECO">R$ ${vehicle.preco.toLocaleString('pt-BR')}</span>
+                                <p class="text-xs text-gray-500">À vista ou financiado</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <button onclick="sendWhatsAppMessage(${vehicle.id}, 'detalhes')" class="btn-secondary py-2 px-3 rounded-lg font-semibold text-xs" id="${cardId}_BTN_DETALHES">Ver Detalhes</button>
+                            <button onclick="sendWhatsAppMessage(${vehicle.id}, 'orcamento')" class="btn-secondary py-2 px-3 rounded-lg font-semibold text-xs" id="${cardId}_BTN_ORCAMENTO">Orçamento</button>
+                            <button onclick="sendWhatsAppMessage(${vehicle.id}, 'comprar')" class="btn-primary py-2 px-3 rounded-lg font-semibold text-white text-xs" id="${cardId}_BTN_COMPRAR">Comprar</button>
+                        </div>
+                        <div class="flex justify-center space-x-2 mt-4">
+                            <div class="w-8 h-6 bg-green-600 rounded flex items-center justify-center">
+                                <i class="fab fa-pix text-white text-xs"></i>
+                            </div>
+                            <div class="w-8 h-6 bg-blue-600 rounded flex items-center justify-center">
+                                <i class="fas fa-credit-card text-white text-xs"></i>
+                            </div>
+                            <div class="w-8 h-6 bg-purple-600 rounded flex items-center justify-center">
+                                <i class="fas fa-university text-white text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Carregar lista de veículos no admin
+        function loadVehicleList() {
+            const container = document.getElementById('vehicleList');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            vehicles.forEach(vehicle => {
+                const statusClass = vehicle.status === 'estoque' ? 'status-estoque' : 
+                                  vehicle.status === 'vendido' ? 'status-vendido' : 'status-reservado';
+                
+                container.innerHTML += `
+                    <div class="border border-gray-200 rounded-lg p-4" data-placeholder="LISTA_VEICULO_${vehicle.id}">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold" data-placeholder="LISTA_VEICULO_${vehicle.id}_TITULO">${vehicle.marca} ${vehicle.modelo} ${vehicle.ano}</h5>
+                            <span class="status-badge ${statusClass}" data-placeholder="LISTA_VEICULO_${vehicle.id}_STATUS">${vehicle.status.toUpperCase()}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3" data-placeholder="LISTA_VEICULO_${vehicle.id}_INFO">R$ ${vehicle.preco.toLocaleString('pt-BR')} • ${vehicle.km}</p>
+                        <div class="flex space-x-2">
+                            <button onclick="editVehicle(${vehicle.id})" class="text-blue-600 hover:text-blue-800 text-sm" data-placeholder="BOTAO_EDITAR_${vehicle.id}">
+                                <i class="fas fa-edit mr-1"></i>Editar
+                            </button>
+                            <button onclick="deleteVehicle(${vehicle.id})" class="text-red-600 hover:text-red-800 text-sm" data-placeholder="BOTAO_EXCLUIR_${vehicle.id}">
+                                <i class="fas fa-trash mr-1"></i>Excluir
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Funções de imagem
+        let currentVehicleImage = null;
+        let editingVehicleId = null;
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    currentVehicleImage = e.target.result;
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').classList.remove('hidden');
+                    document.getElementById('addImageBtn').classList.add('hidden');
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeImage() {
+            currentVehicleImage = null;
+            document.getElementById('vehicleImage').value = '';
+            document.getElementById('imagePreview').classList.add('hidden');
+            document.getElementById('addImageBtn').classList.remove('hidden');
+        }
+
+        function clearVehicleForm() {
+            document.getElementById('vehicleForm').reset();
+            removeImage();
+            editingVehicleId = null;
+            
+            // Atualizar texto do botão
+            const submitBtn = document.querySelector('#vehicleForm button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Salvar Veículo';
+        }
+
+        // Formulário de veículos
+        document.getElementById('vehicleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const vehicleData = {
+                id: editingVehicleId || Date.now(),
+                marca: formData.get('marca'),
+                modelo: formData.get('modelo'),
+                versao: formData.get('versao'),
+                ano: parseInt(formData.get('ano')),
+                km: formData.get('km'),
+                cor: formData.get('cor'),
+                combustivel: formData.get('combustivel'),
+                transmissao: formData.get('transmissao'),
+                preco: parseFloat(formData.get('preco').replace(/[^\d]/g, '')),
+                condicao: formData.get('condicao'),
+                status: formData.get('status'),
+                observacoes: formData.get('observacoes'),
+                premium: formData.get('premium') === 'on',
+                image: currentVehicleImage
+            };
+            
+            if (editingVehicleId) {
+                // Editar veículo existente
+                const index = vehicles.findIndex(v => v.id === editingVehicleId);
+                if (index !== -1) {
+                    vehicles[index] = vehicleData;
+                }
+            } else {
+                // Adicionar novo veículo
+                vehicles.push(vehicleData);
+            }
+            
+            loadVehicleList();
+            loadPublicVehicles();
+            loadPremiumShowcase();
+            clearVehicleForm();
+            
+            // Feedback visual
+            const button = this.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            const action = editingVehicleId ? 'Atualizado!' : 'Salvo!';
+            button.innerHTML = `<i class="fas fa-check mr-2"></i>${action}`;
+            button.style.background = '#28a745';
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = '';
+            }, 2000);
+        });
+
+        // Limpar formulário
+        function clearVehicleForm() {
+            document.getElementById('vehicleForm').reset();
+        }
+
+        // Editar veículo
+        function editVehicle(id) {
+            const vehicle = vehicles.find(v => v.id === id);
+            if (!vehicle) return;
+            
+            editingVehicleId = id;
+            
+            const form = document.getElementById('vehicleForm');
+            form.marca.value = vehicle.marca || '';
+            form.modelo.value = vehicle.modelo || '';
+            form.versao.value = vehicle.versao || '';
+            form.ano.value = vehicle.ano || '';
+            form.km.value = vehicle.km || '';
+            form.cor.value = vehicle.cor || '';
+            form.combustivel.value = vehicle.combustivel || '';
+            form.transmissao.value = vehicle.transmissao || '';
+            form.preco.value = vehicle.preco || '';
+            form.condicao.value = vehicle.condicao || '';
+            form.status.value = vehicle.status || '';
+            form.premium.checked = vehicle.premium || false;
+            form.observacoes.value = vehicle.observacoes || '';
+            
+            // Carregar imagem se existir
+            if (vehicle.image) {
+                currentVehicleImage = vehicle.image;
+                document.getElementById('previewImg').src = vehicle.image;
+                document.getElementById('imagePreview').classList.remove('hidden');
+                document.getElementById('addImageBtn').classList.add('hidden');
+            } else {
+                removeImage();
+            }
+            
+            // Atualizar texto do botão
+            const submitBtn = document.querySelector('#vehicleForm button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-edit mr-2"></i>Atualizar Veículo';
+            
+            // Scroll para o formulário
+            document.getElementById('vehicleForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Excluir veículo
+        function deleteVehicle(id) {
+            if (confirm('Tem certeza que deseja excluir este veículo?')) {
+                vehicles = vehicles.filter(v => v.id !== id);
+                loadVehicleList();
+                loadPublicVehicles();
+                loadPremiumShowcase();
+            }
+        }
+
+        // Sistema de dados da tabela de controle
+        let controlData = [
+            {
+                id: '001',
+                modelo: 'TOYOTA COROLLA XEI 2023',
+                dataEntrada: '15/01/2025',
+                dataSaida: '20/01/2025',
+                comprador: 'João Silva',
+                pagamento: 'Financiado',
+                parcelas: '48x',
+                valor: 'R$ 89.900',
+                statusPagamento: 'PAGO',
+                observacoes: 'Primeira parcela paga'
+            }
+        ];
+
+        // Funções da tabela de controle
+        function addNewRow() {
+            const newId = String(controlData.length + 1).padStart(3, '0');
+            
+            const newEntry = {
+                id: newId,
+                modelo: 'NOVO VEÍCULO',
+                dataEntrada: new Date().toLocaleDateString('pt-BR'),
+                dataSaida: '-',
+                comprador: '-',
+                pagamento: '-',
+                parcelas: '-',
+                valor: 'R$ 0',
+                statusPagamento: 'ABERTO',
+                observacoes: '-'
+            };
+            
+            controlData.push(newEntry);
+            renderControlTable();
+            
+            // Feedback visual
+            showTableMessage('Nova linha adicionada com sucesso!', 'success');
+        }
+
+        function deleteRow(button) {
+            const row = button.closest('tr');
+            const rowIndex = Array.from(row.parentNode.children).indexOf(row);
+            
+            if (confirm('Tem certeza que deseja excluir esta linha? Esta ação não pode ser desfeita.')) {
+                controlData.splice(rowIndex, 1);
+                renderControlTable();
+                showTableMessage('Linha excluída com sucesso!', 'success');
+            }
+        }
+
+        function editCell(cell, field, index) {
+            const currentValue = controlData[index][field];
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentValue;
+            input.className = 'w-full p-1 border border-red-300 rounded text-xs';
+            
+            input.addEventListener('blur', function() {
+                controlData[index][field] = this.value;
+                renderControlTable();
+                saveControlData();
+            });
+            
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    this.blur();
+                }
+            });
+            
+            cell.innerHTML = '';
+            cell.appendChild(input);
+            input.focus();
+            input.select();
+        }
+
+        function togglePaymentStatus(index) {
+            const currentStatus = controlData[index].statusPagamento;
+            controlData[index].statusPagamento = currentStatus === 'PAGO' ? 'ABERTO' : 'PAGO';
+            renderControlTable();
+            saveControlData();
+        }
+
+        function renderControlTable() {
+            const tbody = document.getElementById('controlTable');
+            tbody.innerHTML = '';
+            
+            controlData.forEach((item, index) => {
+                const statusClass = item.statusPagamento === 'PAGO' ? 'payment-status-pago' : 'payment-status-aberto';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td onclick="editCell(this, 'id', ${index})" class="cursor-pointer hover:bg-gray-50">${item.id}</td>
+                    <td onclick="editCell(this, 'modelo', ${index})" class="cursor-pointer hover:bg-gray-50">${item.modelo}</td>
+                    <td onclick="editCell(this, 'dataEntrada', ${index})" class="cursor-pointer hover:bg-gray-50">${item.dataEntrada}</td>
+                    <td onclick="editCell(this, 'dataSaida', ${index})" class="cursor-pointer hover:bg-gray-50">${item.dataSaida}</td>
+                    <td onclick="editCell(this, 'comprador', ${index})" class="cursor-pointer hover:bg-gray-50">${item.comprador}</td>
+                    <td onclick="editCell(this, 'pagamento', ${index})" class="cursor-pointer hover:bg-gray-50">${item.pagamento}</td>
+                    <td onclick="editCell(this, 'parcelas', ${index})" class="cursor-pointer hover:bg-gray-50">${item.parcelas}</td>
+                    <td onclick="editCell(this, 'valor', ${index})" class="cursor-pointer hover:bg-gray-50">${item.valor}</td>
+                    <td>
+                        <span class="status-badge ${statusClass} cursor-pointer" onclick="togglePaymentStatus(${index})">
+                            ${item.statusPagamento}
+                        </span>
+                    </td>
+                    <td onclick="editCell(this, 'observacoes', ${index})" class="cursor-pointer hover:bg-gray-50">${item.observacoes}</td>
+                    <td>
+                        <button onclick="deleteRow(this)" class="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50" title="Excluir linha">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function saveControlData() {
+            // Simular salvamento automático
+            localStorage.setItem('jr_repasses_control_data', JSON.stringify(controlData));
+        }
+
+        function loadControlData() {
+            const saved = localStorage.getItem('jr_repasses_control_data');
+            if (saved) {
+                controlData = JSON.parse(saved);
+                renderControlTable();
+            }
+        }
+
+        function showTableMessage(message, type) {
+            const container = document.querySelector('#adminControl');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white`;
+            messageDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'times'} mr-2"></i>${message}`;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+
+        function exportToCSV() {
+            let csv = 'ID,Modelo,Data Entrada,Data Saída,Comprador,Pagamento,Parcelas,Valor Total,Status Pagamento,Observações\n';
+            
+            controlData.forEach(item => {
+                const row = [
+                    item.id,
+                    `"${item.modelo}"`,
+                    item.dataEntrada,
+                    item.dataSaida,
+                    `"${item.comprador}"`,
+                    item.pagamento,
+                    item.parcelas,
+                    item.valor,
+                    item.statusPagamento,
+                    `"${item.observacoes}"`
+                ].join(',');
+                csv += row + '\n';
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `controle_loja_jr_repasses_${new Date().toLocaleDateString('pt-BR').replace(/\//g, '-')}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            
+            showTableMessage('Dados exportados com sucesso!', 'success');
+        }
+
+        function shareData() {
+            const dataText = controlData.map(item => 
+                `${item.id} - ${item.modelo} - ${item.comprador} - ${item.valor} - ${item.statusPagamento}`
+            ).join('\n');
+            
+            const shareText = `Controle da Loja - JR Repasses\n\n${dataText}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Controle da Loja - JR Repasses',
+                    text: shareText
+                }).then(() => {
+                    showTableMessage('Dados compartilhados com sucesso!', 'success');
+                }).catch(() => {
+                    copyToClipboard(shareText);
+                });
+            } else {
+                copyToClipboard(shareText);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showTableMessage('Dados copiados para a área de transferência!', 'success');
+            }).catch(() => {
+                // Fallback para navegadores mais antigos
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showTableMessage('Dados copiados para a área de transferência!', 'success');
+            });
+        }
+
+        function saveData() {
+            const button = event.target;
+            const originalText = button.innerHTML;
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Salvando...';
+            button.disabled = true;
+            
+            // Salvar dados reais
+            saveControlData();
+            
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-check mr-2"></i>Dados Salvos!';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    button.style.background = '';
+                }, 2000);
+            }, 1000);
+        }
+
+        function printTable() {
+            const printContent = document.querySelector('.control-table').outerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Controle da Loja - JR Repasses</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; }
+                            table { width: 100%; border-collapse: collapse; }
+                            th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+                            th { background-color: #E60000; color: white; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>JR Repasses e Vendas de Veículos SP</h1>
+                        <h2>Controle da Loja</h2>
+                        ${printContent}
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function updateDashboard() {
+            // Calcular dados reais baseados nas vendas
+            const vendasRealizadas = controlData.filter(item => item.statusPagamento === 'PAGO');
+            const vendasMes = vendasRealizadas.filter(item => {
+                const dataVenda = new Date(item.dataSaida.split('/').reverse().join('-'));
+                const mesAtual = new Date().getMonth();
+                const anoAtual = new Date().getFullYear();
+                return dataVenda.getMonth() === mesAtual && dataVenda.getFullYear() === anoAtual;
+            });
+            
+            const faturamentoMes = vendasMes.reduce((total, item) => {
+                const valor = parseFloat(item.valor.replace(/[^\d]/g, '')) || 0;
+                return total + valor;
+            }, 0);
+            
+            document.getElementById('totalVendas').textContent = vendasRealizadas.length;
+            document.getElementById('vendasMes').textContent = vendasMes.length;
+            document.getElementById('estoqueAtual').textContent = vehicles.filter(v => v.status === 'estoque').length;
+            document.getElementById('faturamentoMes').textContent = faturamentoMes > 0 ? 
+                `R$ ${(faturamentoMes / 1000).toFixed(0)}K` : 'R$ 0';
+        }
+
+        // Toggle menu mobile
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Aplicar filtros
+        function applyFilters() {
+            // Implementar lógica de filtros
+            loadEstoqueCompleto();
+        }
+
+        // Função para enviar mensagem WhatsApp
+        function sendWhatsAppMessage(vehicleId, action) {
+            const vehicle = vehicles.find(v => v.id === vehicleId);
+            if (!vehicle) return;
+            
+            const whatsappNumber = '5511999999999'; // Número do WhatsApp da loja
+            let message = '';
+            
+            // Criar mensagem personalizada baseada na ação
+            const vehicleInfo = `${vehicle.marca} ${vehicle.modelo} ${vehicle.versao} ${vehicle.ano}`;
+            const preco = `R$ ${vehicle.preco.toLocaleString('pt-BR')}`;
+            
+            switch(action) {
+                case 'detalhes':
+                    message = `🚗 *SOLICITAÇÃO DE DETALHES*\n\n` +
+                             `Olá! Gostaria de mais informações sobre:\n\n` +
+                             `📋 *Veículo:* ${vehicleInfo}\n` +
+                             `💰 *Preço:* ${preco}\n` +
+                             `🎨 *Cor:* ${vehicle.cor}\n` +
+                             `⛽ *Combustível:* ${vehicle.combustivel}\n` +
+                             `🔧 *Transmissão:* ${vehicle.transmissao}\n` +
+                             `📏 *Quilometragem:* ${vehicle.km}\n\n` +
+                             `Poderia me enviar mais detalhes, fotos e agendar uma visita?\n\n` +
+                             `Obrigado! 😊`;
+                    break;
+                    
+                case 'orcamento':
+                    message = `💰 *SOLICITAÇÃO DE ORÇAMENTO*\n\n` +
+                             `Olá! Gostaria de um orçamento completo para:\n\n` +
+                             `🚗 *Veículo:* ${vehicleInfo}\n` +
+                             `💵 *Preço Anunciado:* ${preco}\n\n` +
+                             `Por favor, me envie:\n` +
+                             `✅ Condições de pagamento à vista\n` +
+                             `✅ Opções de financiamento\n` +
+                             `✅ Valor da entrada\n` +
+                             `✅ Simulação de parcelas\n` +
+                             `✅ Documentação necessária\n\n` +
+                             `Aguardo seu retorno! 📱`;
+                    break;
+                    
+                case 'comprar':
+                    message = `🎯 *INTERESSE EM COMPRAR*\n\n` +
+                             `Olá! Tenho interesse em adquirir:\n\n` +
+                             `🚗 *Veículo:* ${vehicleInfo}\n` +
+                             `💰 *Preço:* ${preco}\n` +
+                             `📍 *Status:* ${vehicle.status.toUpperCase()}\n\n` +
+                             `Gostaria de:\n` +
+                             `🔍 Agendar uma visita para ver o veículo\n` +
+                             `📋 Conhecer as condições de venda\n` +
+                             `💳 Discutir formas de pagamento\n` +
+                             `📄 Saber sobre a documentação\n\n` +
+                             `Quando posso ir até a loja?\n\n` +
+                             `*JR Repasses - Seu próximo carro está aqui!* 🚗✨`;
+                    break;
+            }
+            
+            // Codificar mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            
+            // Abrir WhatsApp em nova aba
+            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        // Funções para gerenciar configurações de contato
+        function previewLocationImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    contactSettings.locationImage = e.target.result;
+                    document.getElementById('locationPreviewImg').src = e.target.result;
+                    document.getElementById('locationImagePreview').classList.remove('hidden');
+                };
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeLocationImage() {
+            contactSettings.locationImage = null;
+            document.getElementById('locationImageInput').value = '';
+            document.getElementById('locationImagePreview').classList.add('hidden');
+            updateLocationDisplay();
+        }
+
+        function updateLocationDisplay() {
+            const locationImage = document.getElementById('locationImage');
+            const defaultLocation = document.getElementById('defaultLocation');
+            const locationTitle = document.getElementById('locationTitle');
+            const locationAddress = document.getElementById('locationAddress');
+            
+            if (contactSettings.locationImage) {
+                locationImage.src = contactSettings.locationImage;
+                locationImage.classList.remove('hidden');
+                defaultLocation.classList.add('hidden');
+            } else {
+                locationImage.classList.add('hidden');
+                defaultLocation.classList.remove('hidden');
+            }
+            
+            locationTitle.textContent = 'Localização';
+            locationAddress.textContent = contactSettings.address;
+        }
+
+        function loadCurrentContactInfo() {
+            document.getElementById('whatsappNumber').value = contactSettings.whatsapp;
+            document.getElementById('contactEmail').value = contactSettings.email;
+            document.getElementById('instagramHandle').value = contactSettings.instagram;
+            document.getElementById('facebookPage').value = contactSettings.facebook;
+            document.getElementById('locationAddressInput').value = contactSettings.address;
+            
+            if (contactSettings.locationImage) {
+                document.getElementById('locationPreviewImg').src = contactSettings.locationImage;
+                document.getElementById('locationImagePreview').classList.remove('hidden');
+            }
+        }
+
+        function updateContactDisplays() {
+            // Atualizar displays na página de contato
+            const emailDisplay = document.getElementById('CONTATO_EMAIL_DISPLAY');
+            if (emailDisplay) {
+                emailDisplay.textContent = contactSettings.email;
+            }
+            
+            // Atualizar localização
+            updateLocationDisplay();
+            
+            // Atualizar links do WhatsApp
+            const whatsappLinks = document.querySelectorAll('a[href*="wa.me"]');
+            const cleanNumber = contactSettings.whatsapp.replace(/\D/g, '');
+            whatsappLinks.forEach(link => {
+                const currentHref = link.getAttribute('href');
+                const newHref = currentHref.replace(/5511\d+/, `55${cleanNumber}`);
+                link.setAttribute('href', newHref);
+            });
+        }
+
+        // Formulário de configurações de contato
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Atualizar configurações
+                    contactSettings.whatsapp = document.getElementById('whatsappNumber').value || contactSettings.whatsapp;
+                    contactSettings.email = document.getElementById('contactEmail').value || contactSettings.email;
+                    contactSettings.instagram = document.getElementById('instagramHandle').value || contactSettings.instagram;
+                    contactSettings.facebook = document.getElementById('facebookPage').value || contactSettings.facebook;
+                    contactSettings.address = document.getElementById('locationAddressInput').value || contactSettings.address;
+                    
+                    // Salvar no localStorage
+                    localStorage.setItem('jr_repasses_contact_settings', JSON.stringify(contactSettings));
+                    
+                    // Atualizar displays
+                    updateContactDisplays();
+                    
+                    // Feedback visual
+                    const button = this.querySelector('button[type="submit"]');
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check mr-2"></i>Configurações Salvas!';
+                    button.style.background = '#28a745';
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.style.background = '';
+                    }, 2000);
+                });
+            }
+        });
+
+        function loadContactSettings() {
+            const saved = localStorage.getItem('jr_repasses_contact_settings');
+            if (saved) {
+                contactSettings = { ...contactSettings, ...JSON.parse(saved) };
+                updateContactDisplays();
+            }
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPublicVehicles();
+            loadPremiumShowcase();
+            loadControlData();
+            loadContactSettings();
+            
+            // Inicializar seções do admin como ocultas
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Mostrar dashboard por padrão
+            document.getElementById('adminDashboard').style.display = 'block';
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'992f5fb4912c4edd',t:'MTc2MTIwMjk5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+                            
